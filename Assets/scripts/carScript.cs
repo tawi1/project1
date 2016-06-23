@@ -25,8 +25,9 @@ public class carScript : MonoBehaviour
     void Update()
     {
 
-        Vector3 Placement = new Vector3(transform.position.x, transform.position.y, transform.position.x);
-        CharacterController controller = GetComponent<CharacterController>();
+      /*  Vector3 Placement = new Vector3(transform.position.x, transform.position.y, transform.position.x);
+        CharacterController controller = GetComponent<CharacterController>();*/
+
         rotator = Input.GetAxis("Horizontal");
 
         gas = Input.GetAxis("Vertical");
@@ -49,7 +50,6 @@ public class carScript : MonoBehaviour
             if ((speed > maxSideSpeed) && (rotator != 0))
             {
                 speed = Mathf.Clamp(speed - brake * Time.deltaTime, 0f, maxspeed);
-                checker += 1;
             }
             else
             {
@@ -59,8 +59,8 @@ public class carScript : MonoBehaviour
 
 
 
-                
-            transform.Translate(new Vector3(speed, 0f, 0f));
+
+        transform.Translate(new Vector3(speed, 0f, 0f));
 
         if ((rotator > 0) && (speed > 0.01f))
         {
@@ -74,11 +74,14 @@ public class carScript : MonoBehaviour
         }
     }
 
+    
     void OnCollisionEnter(Collision c)
     {
+
         if (c.gameObject.tag == "Barrier")
         {
-           
+            Debug.Log("BOOM");
+            checker += 1;
         }
     }
 }
