@@ -13,7 +13,6 @@ public class carScript : MonoBehaviour
     public float gas = 0f;
     public float rotator = 0f;
     public float sideSpeed = 2f;
-    public int checker = 0;
 
     // Use this for initialization
     void Start()
@@ -25,8 +24,8 @@ public class carScript : MonoBehaviour
     void Update()
     {
 
-      /*  Vector3 Placement = new Vector3(transform.position.x, transform.position.y, transform.position.x);
-        CharacterController controller = GetComponent<CharacterController>();*/
+        /*  Vector3 Placement = new Vector3(transform.position.x, transform.position.y, transform.position.x);
+          CharacterController controller = GetComponent<CharacterController>();*/
 
         rotator = Input.GetAxis("Horizontal");
 
@@ -56,10 +55,7 @@ public class carScript : MonoBehaviour
                 speed = Mathf.Clamp(speed + acceleration * Time.deltaTime, 0f, maxspeed);
             }
         }
-
-
-
-
+        
         transform.Translate(new Vector3(speed, 0f, 0f));
 
         if ((rotator > 0) && (speed > 0.01f))
@@ -74,14 +70,33 @@ public class carScript : MonoBehaviour
         }
     }
 
-    
-    void OnCollisionEnter(Collision c)
+    void OnTriggerEnter2D(Collider2D c)
     {
+        if (c.gameObject.name == "minigun")
+        {
+            c.gameObject.transform.SetParent(transform);
+            c.transform.position = transform.position;
+            Vector3 temp = transform.rotation.eulerAngles;
+
+            temp.z = 225f + transform.rotation.eulerAngles.z;
+
+            c.transform.rotation = Quaternion.Euler(0, 0, temp.z);
+        }
+    }
+
+
+    void OnCollisionEnter2D(Collision2D c)
+    {
+
 
         if (c.gameObject.tag == "Barrier")
         {
-            Debug.Log("BOOM");
-            checker += 1;
+            Rigidbody2D rb = transform.GetComponent<Rigidbody2D>();
+            Vector2 v3Velocity = rb.velocity;
+            float currentspeed = rb.velocity.magnitude;
+            Debug.Log(v3Velocity);
+            //Vector3.Angle(transform.forward,c.gameObject.
+
         }
     }
 }
