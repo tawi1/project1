@@ -15,9 +15,11 @@ public class carScript : MonoBehaviour
     public float rotator = 0f;
     public float sideSpeed = 2f;
     public bool haveGun = false;
+    public int laps = 0;
+    public int Score = 0;
     Vector3 lastPosition;
     Vector3 direction;
-    Vector3 localDirection;
+
     // Use this for initialization
     void Start()
     {
@@ -27,10 +29,6 @@ public class carScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        /*  Vector3 Placement = new Vector3(transform.position.x, transform.position.y, transform.position.x);
-          CharacterController controller = GetComponent<CharacterController>();*/
-
         rotator = Input.GetAxis("Horizontal");
 
         gas = Input.GetAxis("Vertical");
@@ -85,9 +83,13 @@ public class carScript : MonoBehaviour
         }
     }
 
+    void OnGUI()
+    {
+        GUI.Box(new Rect(0, 0, 100, 100), "Laps: " + laps);
+    }
+
     void fire()
     {
-
         haveGun = false;
         Destroy(gameObject.transform.FindChild("minigun").gameObject);
     }
@@ -104,13 +106,21 @@ public class carScript : MonoBehaviour
                 Vector3 temp = transform.rotation.eulerAngles;
 
                 temp.z = 226f + transform.rotation.eulerAngles.z;
-
+                c.gameObject.layer = 4;
                 c.transform.rotation = Quaternion.Euler(0, 0, temp.z);
+                //Destroy(c.gameObject.collider2D);
                 haveGun = true;
             }
         }
     }
 
+    void OnTriggerExit2D(Collider2D c)
+    {
+        if (c.gameObject.name == "Start")
+        {     
+                laps++;        
+        }
+    }
 
     void OnCollisionEnter2D(Collision2D c)
     {
